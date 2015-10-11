@@ -91,6 +91,8 @@
 /obj/structure/closet/firecloset/update_icon()
 	if(!opened)
 		icon_state = icon_closed
+		if (has_door_decal == 1)
+			overlays += door_decal //Return door decals
 	else
 		icon_state = icon_opened
 

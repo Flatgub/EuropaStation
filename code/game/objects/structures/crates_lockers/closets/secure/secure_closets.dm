@@ -25,6 +25,8 @@
 	if(..())
 		if(broken)
 			icon_state = src.icon_off
+			if (has_door_decal == 1)
+				overlays += door_decal //Return door decals
 		return 1
 	else
 		return 0
@@ -138,6 +140,8 @@
 			icon_state = icon_closed
 		if(welded)
 			overlays += "welded"
+		if (has_door_decal == 1)
+			overlays += door_decal //Return door decals
 	else
 		icon_state = icon_opened
 

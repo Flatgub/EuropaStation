@@ -21,6 +21,9 @@
 	var/store_items = 1
 	var/store_mobs = 1
 
+	var/door_decal = ""
+	var/has_door_decal = 0
+
 /obj/structure/closet/initialize()
 	..()
 	if(!opened)		// if closed, any item at the crate's loc is put in the contents
@@ -34,6 +37,13 @@
 			content_size += Ceiling(I.w_class/2)
 		if(content_size > storage_capacity-5)
 			storage_capacity = content_size + 5
+
+/obj/structure/closet/New() // rust for standard closets
+	..()
+	if(name != "statue" && name != "critter crate" && name != "gun cabinet" && findtext(icon_state,"fireaxe") == 0 && findtext(icon_state,"crate") == 0 && findtext(icon_state,"medical_wall") == 0 && findtext(icon_state,"extinguisher_") == 0 && findtext(icon_state,"hydrant") == 0 && findtext(icon_state,"coffin") == 0 && findtext(icon_state,"fridge") == 0 && findtext(icon_state,"cabinet") == 0 && prob(100)) //Check that closet/locker isn't a special type (only retangular standard lockers have rust
+		door_decal = image('icons/obj/europa/grimes/closet.dmi',"testrust")
+		has_door_decal = 1
+		overlays += door_decal
 
 
 /obj/structure/closet/examine(mob/user)
@@ -95,6 +105,10 @@
 	src.opened = 1
 	playsound(src.loc, open_sound, 15, 1, -3)
 	density = 0
+
+	if (has_door_decal == 1)
+		overlays -= door_decal //hide decals on the door
+
 	return 1
 
 /obj/structure/closet/proc/close()
@@ -117,6 +131,9 @@
 
 	playsound(src.loc, close_sound, 15, 1, -3)
 	density = 1
+
+	if (has_door_decal == 1)
+		overlays += door_decal //Return door decals
 	return 1
 
 //Cham Projector Exception
@@ -312,6 +329,8 @@
 	overlays.Cut()
 	if(!opened)
 		icon_state = icon_closed
+		if (has_door_decal == 1)
+			overlays |= door_decal //return decal to door
 		if(welded)
 			overlays += "welded"
 	else
