@@ -138,10 +138,13 @@
 			icon_state = icon_locked
 		else
 			icon_state = icon_closed
-		if(welded)
-			overlays += "welded"
+
 		if (has_door_decal == 1)
 			overlays += door_decal //Return door decals
+
+		if(welded)
+			overlays += "welded"
+
 	else
 		icon_state = icon_opened
 
