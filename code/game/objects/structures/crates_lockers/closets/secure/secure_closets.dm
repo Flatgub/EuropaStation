@@ -157,10 +157,8 @@
 	desc += " It appears to be broken."
 	icon_state = icon_off
 	spawn()
-		flick(icon_broken, src)
-		sleep(10)
-		flick(icon_broken, src)
-		sleep(10)
+		flick(icon_broken,src)
+		sleep(22)
 	broken = 1
 	locked = 0
 	update_icon()
