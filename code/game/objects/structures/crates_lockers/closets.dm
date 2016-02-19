@@ -42,11 +42,11 @@
 	..()
 	if(name != "statue" && name != "freezer" && name != "critter crate" && name != "gun cabinet" && findtext(icon_state,"fireaxe") == 0 && findtext(icon_state,"crate") == 0 && findtext(icon_state,"medical_wall") == 0 && findtext(icon_state,"extinguisher_") == 0 && findtext(icon_state,"hydrant") == 0 && findtext(icon_state,"coffin") == 0 && findtext(icon_state,"fridge") == 0 && findtext(icon_state,"cabinet") == 0 && prob(75)) //Making sure its a rectangular locker, and 75% for rust
 		if (prob(15)) //15% for heavy rust
-			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rusth[rand(1,8)]")
-		else if (prob(30)) //50% for mild rust
-			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rustm[rand(1,8)]")
-		else //Light rust
-			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rustl[rand(1,8)]")
+			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rustHeavy[rand(1,8)]")
+		else if (prob(30)) //30% for mild rust
+			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rustMild[rand(1,8)]")
+		else //55% for light rust
+			door_decal = image('icons/obj/europa/grimes/closet.dmi',"rustLight[rand(1,8)]")
 		has_door_decal = 1
 		overlays += door_decal
 
