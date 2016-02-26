@@ -267,11 +267,9 @@
 	return 0
 
 /mob/living/carbon/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /obj/screen/fullscreen/flash)
+	set waitfor=0
 	if(eyecheck() < intensity || override_blindness_check)
-		return ..()
-
-// ++++ROCKDTBEN++++ MOB PROCS -- Ask me before touching.
-// Stop! ... Hammertime! ~Carn
+		. = ..()
 
 /mob/living/carbon/proc/getDNA()
 	return dna
@@ -384,28 +382,6 @@
 	 ..()
 
 	return
-
-//generates realistic-ish pulse output based on preset levels
-/mob/living/carbon/proc/get_pulse(var/method)	//method 0 is for hands, 1 is for machines, more accurate
-	var/temp = 0								//see setup.dm:694
-	switch(src.pulse)
-		if(PULSE_NONE)
-			return "0"
-		if(PULSE_SLOW)
-			temp = rand(40, 60)
-			return num2text(method ? temp : temp + rand(-10, 10))
-		if(PULSE_NORM)
-			temp = rand(60, 90)
-			return num2text(method ? temp : temp + rand(-10, 10))
-		if(PULSE_FAST)
-			temp = rand(90, 120)
-			return num2text(method ? temp : temp + rand(-10, 10))
-		if(PULSE_2FAST)
-			temp = rand(120, 160)
-			return num2text(method ? temp : temp + rand(-10, 10))
-		if(PULSE_THREADY)
-			return method ? ">250" : "extremely weak and fast, patient's artery feels like a thread"
-//			output for machines^	^^^^^^^output for people^^^^^^^^^
 
 /mob/living/carbon/verb/mob_sleep()
 	set name = "Sleep"

@@ -51,8 +51,7 @@ var/list/organ_cache = list()
 		src.owner = holder
 		species = all_species["Human"]
 		if(holder.dna)
-			dna = holder.dna.Clone()
-			species = all_species[dna.species]
+			set_dna(holder.dna.Clone())
 		else
 			log_debug("[src] at [loc] spawned without a proper DNA.")
 		var/mob/living/carbon/human/H = holder
@@ -73,8 +72,11 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/set_dna(var/datum/dna/new_dna)
 	if(new_dna)
 		dna = new_dna.Clone()
+		if(!blood_DNA)
+			blood_DNA = list()
 		blood_DNA.Cut()
 		blood_DNA[dna.unique_enzymes] = dna.b_type
+		species = all_species[new_dna.species]
 
 /obj/item/organ/proc/die()
 	if(status & ORGAN_ROBOT)
@@ -134,7 +136,8 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
-	var/antibiotics = owner.reagents.get_reagent_amount("antibiotic")
+	var/antibiotics = 0
+	if(owner) antibiotics = owner.reagents.get_reagent_amount("antibiotic")
 
 	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(30))
 		germ_level--
@@ -146,7 +149,8 @@ var/list/organ_cache = list()
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
+		if(owner)
+			owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
 
 	if (germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
@@ -285,7 +289,7 @@ var/list/organ_cache = list()
 	var/obj/item/organ/external/affected = owner.get_organ(parent_organ)
 	if(affected) affected.internal_organs -= src
 
-	loc = get_turf(owner)
+	forceMove(get_turf(owner))
 	processing_objects |= src
 	rejecting = null
 	var/datum/reagent/blood/organ_blood = locate(/datum/reagent/blood) in reagents.reagent_list
